@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         // 로그인 및 검증 성공
                         if(context.mounted) {
-                          context.go("/");
+                          context.go("/home");
                         }
                       }
                     },

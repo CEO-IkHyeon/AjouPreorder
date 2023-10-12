@@ -37,7 +37,7 @@ class PreorderApp extends StatelessWidget {
     initialLocation: "/login",
     routes: [
       GoRoute(
-        path: "/",
+        path: "/home",
         builder: (context, state) => HomeScreen(),
       ),
       GoRoute(

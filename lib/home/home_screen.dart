@@ -1,5 +1,7 @@
-import 'package:flutter/gestures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final Map<String, List<Map<String, dynamic>>> menuData = {
   "커피(ICE)": [
@@ -96,6 +98,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      context.go("/login");
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("로그아웃 실패 : $e")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,9 +116,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: "cafe",
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_bag),
+            onPressed: () => signOut(context),
+            icon: const Icon(Icons.logout),
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_bag),
             onPressed: () {},
           ),
+
         ],
       ),
       body: Column(
@@ -120,14 +138,15 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Color(0xCCBDBDBD),
         selectedItemColor: Color(0xff303742),
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.menu),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search),label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person),label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.menu), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
         ],
-        onTap: (index){
+        onTap: (index) {
           print("Selected index: $index");
-        },),
+        },
+      ),
     );
   }
 }
@@ -202,10 +221,10 @@ class _CategoryBarState extends State<CategoryBar> {
                   SizedBox(height: 4.0),
                   isSelected
                       ? Container(
-                    width: 20.0,
-                    height: 2.0,
-                    color: Color(0xff303742),
-                  )
+                          width: 20.0,
+                          height: 2.0,
+                          color: Color(0xff303742),
+                        )
                       : Container(),
                 ],
               ),
@@ -240,11 +259,11 @@ class MenuList extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                      color: Color(0xffDDDDDB),
-                    ))),
+              color: Color(0xffDDDDDB),
+            ))),
             child: ListTile(
               contentPadding:
-              EdgeInsets.symmetric(vertical: 13.5, horizontal: 36.0),
+                  EdgeInsets.symmetric(vertical: 13.5, horizontal: 36.0),
               title: Padding(
                 padding: EdgeInsets.only(left: 110.0),
                 child: Column(

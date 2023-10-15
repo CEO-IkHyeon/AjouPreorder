@@ -13,7 +13,7 @@ import 'package:preorder/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(PreorderApp());
+    await tester.pumpWidget(PreorderApp(initialRoute: "/login",));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

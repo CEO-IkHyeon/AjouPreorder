@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,54 +11,65 @@ import 'package:preorder/login/login_screen.dart';
 import 'home/home_screen.dart';
 import 'login/sign_up_screen.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   if (kDebugMode) {
-    try{
+    try {
       await FirebaseAuth.instance.useAuthEmulator("localhost", 9099);
       FirebaseFirestore.instance.useFirestoreEmulator("localhost", 8080);
       FirebaseStorage.instance.useStorageEmulator("localhost", 9199);
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
   }
-  runApp(PreorderApp());
+  
+  // 이전 종료시 로그인 상태였는지 로그아웃 상태였는지
+  final initialRoute = FirebaseAuth.instance.currentUser == null
+      ? "/login"
+      : "/home";
+
+  runApp(PreorderApp(initialRoute: initialRoute));
 }
 
 class PreorderApp extends StatelessWidget {
-  PreorderApp({super.key});
+  final String initialRoute;
 
-  final router = GoRouter(
-    initialLocation: "/login",
-    routes: [
-      GoRoute(
-        path: "/home",
-        builder: (context, state) => HomeScreen(),
-      ),
-      GoRoute(
-        path: "/login",
-        builder: (context, state) => LoginScreen(),
-      ),
-      GoRoute(
-        path: "/sign_up",
-        builder: (context, state) => SignUpScreen(),
-      ),
-    ],
-  );
+  PreorderApp({super.key, required this.initialRoute});
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    final GoRouter router = GoRouter(
+      initialLocation: initialRoute,
+      routes: [
+        GoRoute(
+          path: "/home",
+          builder: (context, state) => HomeScreen(),
+        ),
+        GoRoute(
+          path: "/login",
+          builder: (context, state) => LoginScreen(),
+        ),
+        GoRoute(
+          path: "/sign_up",
+          builder: (context, state) => SignUpScreen(),
+        ),
+      ],
+    );
+
     return MaterialApp.router(
-      title: '도카 PreOrder',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      routerConfig: router,
+        title: '도카 PreOrder',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        routerConfig: router,
     );
   }
 }

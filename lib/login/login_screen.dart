@@ -27,10 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-        const SnackBar(content: Text("user-not-found"));
         print(e.toString());
       } else if (e.code == "wrong-password") {
-        const SnackBar(content: Text("wrong-password"));
 
         print(e.toString());
       }
@@ -135,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (result == null) {
                           if(context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text("로그인 실패"),
                               ),
                             );

@@ -27,10 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-        //logic
         print(e.toString());
       } else if (e.code == "wrong-password") {
-        //logic
+
         print(e.toString());
       }
     } catch (e) {
@@ -54,6 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // 즉, gooleAuth를 통해 token들 가져와서 firebase에 넣는다
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         // 로그인 및 검증 성공
                         if(context.mounted) {
-                          context.go("/");
+                          context.go("/home");
                         }
                       }
                     },

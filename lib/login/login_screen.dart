@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (result == null) {
                           if(context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text("로그인 실패"),
                               ),
                             );
